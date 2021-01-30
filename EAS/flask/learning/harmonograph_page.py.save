@@ -1,0 +1,58 @@
+from flask import Flask, request
+from aFunction import do_calculation
+
+app = Flask(__name__)
+#app.config["DEBUG"] = True
+
+@app.route("/", methods=["GET", "POST"])
+def adder_page():
+    headers = {'Content-Type': 'text/html'}
+    errors=""
+    if request.method == "POST":
+        number1 = None
+        number2 = None
+        try:
+            number1 = float(request.form["number1"])
+        except:
+            errors += "<p>{!r} is not a number.</p>\n".format(request.form["number1"])
+
+        try:
+            number2 = float(request.form["number2"])
+        except:
+            errors += "<p>{!r} is not a number.</p>\n".format(request.form["number2"])
+
+        if number1 is not None and number2 is not None:
+            result = do_calculation(number1, number2)
+            return '''
+                <html>
+                    <body>
+                        <p>The result is  {result}</p>
+                        <p><a href="/">Click here to calculate again</a>
+                    </body>
+                </html>
+            '''.format(result=result)
+
+    return  '''
+        <html>
+            <body>
+                {errors}
+                <p>Choose a preset harmonograph figure (not active yet):</p>
+                <form  method="post" action=".">
+                    <input type="radio" name="preset" value="fish"> Fish<br>
+                    <input type="radio" name="preset" value="pretzel"> Pretzel<br>
+                    <input type="radio" name="preset" value="one"> One<br>
+                    <input type="radio" name="preset" value="two"> Two<br>
+                    <input type="radio" name="preset" value="three"> Three<br>
+                    <p><input type="submit" value="Draw Preset" /></p>
+                </form>
+                <p>OR set parameters for your own custom harmonograph:
+                <form method="post" action=".">
+                    <p>Height <input name="height" size="6" maxlength="4" /> Max value is 6500; integer only</p>
+                    <p>Width <input name="width" size="6" maxlength="4"/> Max value is 9500; integer only</p>
+                    <p>Ratio of periods - height : width <input name="h_ratio" size="6" maxlength="6"/> : <input name="w_ratio" /> Decimals are okay</p>
+                    <input type="submit" value="Draw Custom" /></p>
+                </form>
+            </body>
+        </html>
+    '''.format(errors=errors)
+

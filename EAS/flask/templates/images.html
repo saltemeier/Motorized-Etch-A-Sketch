@@ -1,0 +1,28 @@
+
+<!DOCTYPE html> 
+  
+<html> 
+<head> 
+    <title>EAS Image Drawer</title> 
+</head> 
+<body> 
+
+    <form method="post" action="draw_image">
+    Select one of the available images from the list below and press Go <br>
+    <br>
+
+    {% for item in fileWithPath %}
+
+        <input type="radio" name="image" value={{item}}> {{item[item.rfind("/")+1:item.find(".")]}} 
+        <a href="{{item}}" target="_blank">
+        <img src="{{item}}" height=50 width=50></a>
+        <br>
+ 
+    {% endfor %} 
+    
+    <br>
+    <input type="submit" value="Go!">
+    </form>
+
+</body> 
+</html>
