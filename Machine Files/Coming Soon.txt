@@ -1,1 +1,0 @@
-This directory will have machine files for the EAS build as well as Fusion 360 design files that can be modified.
