@@ -41,7 +41,7 @@ def listen(s):
         data = client.recv(size)
 
         #Now process the data received as a string.  Should be a function name $
-        data = str(data)
+        data = data.decode()
         print("String received:", data)
         if data[:4] == "STOP":
             print("Received STOP command!")
